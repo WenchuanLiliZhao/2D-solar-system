@@ -1,0 +1,44 @@
+---
+description: Cross-browser hidden scrollbars — avoid bare scrollbar-width
+globs: **/*.{css,scss,sass}
+alwaysApply: false
+---
+
+# scrollbar-width and hidden scrollbars
+
+`scrollbar-width` is not supported in Safari, Safari on iOS, Samsung Internet, or Chrome before 121. Do not set it alone when hiding scrollbars.
+
+Use all three layers (same pattern as `src/global-styles/1-reset.scss`):
+
+```scss
+// ❌ BAD — linter / compat warnings; no effect in Safari
+.panel {
+  overflow-x: auto;
+  scrollbar-width: none;
+}
+
+// ✅ GOOD
+.panel {
+  overflow-x: auto;
+  -ms-overflow-style: none; /* IE and legacy Edge */
+}
+
+.panel::-webkit-scrollbar {
+  /* Chrome, Safari, Opera, Edge Chromium */
+  display: none;
+  width: 0;
+  height: 0;
+}
+
+@supports (scrollbar-width: none) {
+  .panel {
+    scrollbar-width: none; /* Firefox; Chromium 121+ */
+  }
+}
+```
+
+- **WebKit** (`::-webkit-scrollbar`): required for Safari and most Chromium scrollbars.
+- **Firefox / Chromium 121+**: gate `scrollbar-width: none` inside `@supports (scrollbar-width: none)`.
+- **Legacy Edge / IE**: `-ms-overflow-style: none` when the element needs it outside the global reset.
+
+Do not remove `::-webkit-scrollbar` rules when adding `@supports`; they cover different engines.

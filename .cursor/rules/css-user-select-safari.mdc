@@ -1,0 +1,24 @@
+---
+description: Safari-compatible user-select — always pair with -webkit-user-select
+globs: **/*.{css,scss,sass}
+alwaysApply: false
+---
+
+# user-select and Safari
+
+When setting `user-select`, always declare the WebKit-prefixed property **immediately before** the standard property so Safari and Safari on iOS are covered and linters stay quiet.
+
+```scss
+// ❌ BAD — triggers Safari compatibility warnings
+.panel {
+  user-select: none;
+}
+
+// ✅ GOOD
+.panel {
+  -webkit-user-select: none;
+  user-select: none;
+}
+```
+
+Apply the same pattern for every value (`none`, `text`, `all`, `auto`, etc.). Do not use only `-webkit-user-select` without the unprefixed `user-select`.

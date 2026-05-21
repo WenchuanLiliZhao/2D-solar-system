@@ -1,0 +1,26 @@
+:root {
+  /* Mini Metro inspired palette — muted, paper-like */
+  --paper-light:     white;
+  --paper:           #EDE5D3;
+  --paper-deep:      #cdbe9b;
+  --ink:             #1F1F1F;
+  --ink-soft:        #3A3A3A;
+  --ink-mute:        #6B6B6B;
+  --ink-faint:       #B5AE9B;
+  --line:            #2B2B2B;
+  --orbit:           rgba(31, 31, 31, 0.18);
+  --orbit-faint:     rgba(31, 31, 31, 0.10);
+  --shadow:          rgba(31, 31, 31, 0.5);
+
+  /* Chat — dusty blue, cool against warm paper (Mini Metro line tone) */
+  --chat-assistant-bg:     #D6E2F2;
+  --chat-assistant-border: #A4B8CE;
+
+  /* Semantic */
+  --use-bg-prime:    var(--paper);
+  --use-text-prime:  var(--ink);
+
+  /* Line heights */
+  --lh-normal:       1.5;
+  --lh-tight:        1.2;
+}

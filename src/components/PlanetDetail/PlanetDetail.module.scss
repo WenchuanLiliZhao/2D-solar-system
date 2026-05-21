@@ -1,0 +1,504 @@
+.backdrop {
+  position: fixed;
+  inset: 0;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 220ms ease;
+  z-index: 10;
+}
+
+.backdropOpen {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.panel {
+  position: fixed;
+  top: 16px;
+  right: 16px;
+  bottom: 16px;
+  width: min(440px, calc(100vw - 32px));
+  background: var(--paper-light);
+  border: 1px solid var(--line);
+  transform: translateX(calc(100% + 32px));
+  transition: transform 280ms cubic-bezier(0.22, 0.61, 0.36, 1);
+  z-index: 20;
+  display: flex;
+  flex-direction: column;
+  box-shadow: 0 12px 32px rgba(31, 31, 31, 0.12);
+}
+
+.panelOpen {
+  transform: translateX(0);
+}
+
+/* ── Header ─────────────────────────────────────────────────────────────── */
+
+.panelHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 22px 24px 18px;
+  border-bottom: 1px solid var(--orbit);
+  -webkit-user-select: none;
+  user-select: none;
+  flex-shrink: 0;
+}
+
+.headerLeft {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+
+.swatch {
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  border: 1px solid var(--line);
+  flex-shrink: 0;
+}
+
+.headerText {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.eyebrow {
+  font-family: var(--font-family-sans);
+  font-size: 10px;
+  font-weight: 500;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--ink-mute);
+}
+
+.title {
+  font-family: var(--font-family-serif);
+  font-size: 22px;
+  font-weight: 500;
+  color: var(--ink);
+  line-height: 1.1;
+  margin: 0;
+}
+
+.closeBtn {
+  width: 32px;
+  height: 32px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid var(--line);
+  background: transparent;
+  color: var(--ink);
+  cursor: pointer;
+  transition: background-color 180ms ease, color 180ms ease;
+
+  &:hover {
+    background-color: var(--ink);
+    color: var(--paper);
+  }
+
+  &:focus-visible {
+    outline: 2px solid var(--ink);
+    outline-offset: 2px;
+  }
+
+  svg {
+    width: 14px;
+    height: 14px;
+  }
+}
+
+/* ── Tab strip ──────────────────────────────────────────────────────────── */
+
+.tabStrip {
+  flex-shrink: 0;
+  display: flex;
+  gap: 0;
+  padding: 0 12px;
+  border-bottom: 1px solid var(--orbit);
+  overflow-x: auto;
+  -ms-overflow-style: none;
+  -webkit-user-select: none;
+  user-select: none;
+  background: var(--paper-light);
+}
+
+.tabStrip::-webkit-scrollbar {
+  display: none;
+  width: 0;
+  height: 0;
+}
+
+@supports (scrollbar-width: none) {
+  .tabStrip {
+    scrollbar-width: none;
+  }
+}
+
+.tab {
+  flex-shrink: 0;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 12px 14px 10px;
+  margin: 0;
+  background: transparent;
+  border: none;
+  border-bottom: 2px solid transparent;
+  color: var(--ink-mute);
+  font-family: var(--font-family-sans);
+  font-size: 12px;
+  font-weight: 500;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: color 160ms ease, border-color 160ms ease;
+  max-width: 200px;
+
+  &:hover {
+    color: var(--ink);
+  }
+
+  &:focus-visible {
+    outline: none;
+    color: var(--ink);
+    border-bottom-color: var(--ink-faint);
+  }
+}
+
+.tabActive {
+  color: var(--ink);
+  border-bottom-color: var(--ink);
+}
+
+/* Session tab = selectable label + close control on the right. */
+.tabGroup {
+  flex-shrink: 0;
+  display: inline-flex;
+  align-items: stretch;
+  border-bottom: 2px solid transparent;
+  transition: border-color 160ms ease;
+}
+
+.tabGroupActive {
+  border-bottom-color: var(--ink);
+}
+
+.tabSelect {
+  flex-shrink: 0;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 12px 6px 10px 14px;
+  margin: 0;
+  background: transparent;
+  border: none;
+  color: var(--ink-mute);
+  font-family: var(--font-family-sans);
+  font-size: 12px;
+  font-weight: 500;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: color 160ms ease;
+  max-width: 180px;
+
+  &:hover {
+    color: var(--ink);
+  }
+
+  &:focus-visible {
+    outline: none;
+    color: var(--ink);
+  }
+}
+
+.tabGroupActive .tabSelect {
+  color: var(--ink);
+}
+
+.tabClose {
+  flex-shrink: 0;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  padding: 0 8px 2px 2px;
+  margin: 0;
+  background: transparent;
+  border: none;
+  color: var(--ink-faint);
+  cursor: pointer;
+  transition: color 160ms ease, background-color 160ms ease;
+
+  &:hover {
+    color: var(--ink);
+    background-color: var(--paper);
+  }
+
+  &:focus-visible {
+    outline: 2px solid var(--ink);
+    outline-offset: -2px;
+    color: var(--ink);
+  }
+
+  svg {
+    width: 10px;
+    height: 10px;
+  }
+}
+
+.tabGroup:hover .tabClose {
+  color: var(--ink-mute);
+}
+
+.tabIndex {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 18px;
+  height: 18px;
+  padding: 0 5px;
+  border: 1px solid currentColor;
+  font-family: var(--font-family-mono);
+  font-size: 10px;
+  letter-spacing: 0;
+  opacity: 0.85;
+}
+
+.tabLabel {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  text-transform: none;
+  letter-spacing: 0.02em;
+  font-weight: 400;
+  font-size: 13px;
+}
+
+/* ── Body container ─────────────────────────────────────────────────────── */
+
+.body {
+  flex: 1;
+  min-height: 0;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+
+/* ── Intro tab ──────────────────────────────────────────────────────────── */
+
+.intro {
+  flex: 1;
+  min-height: 0;
+  overflow-y: auto;
+  padding: 22px 24px 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 22px;
+}
+
+.introText {
+  font-family: var(--font-family-serif);
+  font-size: 15px;
+  line-height: 1.55;
+  color: var(--ink);
+  margin: 0;
+}
+
+.sectionLabel {
+  font-family: var(--font-family-sans);
+  font-size: 10px;
+  font-weight: 500;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--ink-mute);
+}
+
+.presetSection {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.presetGrid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 8px;
+}
+
+.presetCard {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 12px 14px;
+  background: var(--paper-light);
+  border: 1px solid var(--line);
+  color: var(--ink);
+  font-family: var(--font-family-sans);
+  font-size: 13px;
+  line-height: 1.4;
+  text-align: left;
+  cursor: pointer;
+  transition: background-color 160ms ease, transform 160ms ease,
+    box-shadow 160ms ease;
+
+  &:hover {
+    background-color: var(--paper);
+    transform: translateY(-1px);
+    box-shadow: 0 4px 10px rgba(31, 31, 31, 0.06);
+  }
+
+  &:focus-visible {
+    outline: 2px solid var(--ink);
+    outline-offset: 2px;
+  }
+}
+
+.presetText {
+  flex: 1;
+}
+
+.presetArrow {
+  font-family: var(--font-family-mono);
+  font-size: 14px;
+  color: var(--ink-mute);
+  transition: transform 160ms ease, color 160ms ease;
+}
+
+.presetCard:hover .presetArrow {
+  color: var(--ink);
+  transform: translateX(2px);
+}
+
+.introComposer {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+/* ── Camera (tracking) actions, only on Intro for planets ───────────────── */
+
+.actions {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding-top: 18px;
+  border-top: 1px solid var(--orbit);
+}
+
+.trackBtn {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 14px;
+  border: 1px solid var(--line);
+  background: transparent;
+  color: var(--ink);
+  cursor: pointer;
+  font-family: var(--font-family-sans);
+  font-size: 13px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  transition: background-color 180ms ease, color 180ms ease,
+    border-color 180ms ease;
+
+  &:hover {
+    background-color: var(--ink);
+    color: var(--paper);
+
+    .trackDot {
+      background-color: var(--paper);
+    }
+  }
+
+  &:focus-visible {
+    outline: 2px solid var(--ink);
+    outline-offset: 2px;
+  }
+}
+
+.trackBtnActive {
+  background-color: var(--ink);
+  color: var(--paper);
+
+  .trackDot {
+    background-color: var(--paper);
+    box-shadow: 0 0 0 3px rgba(237, 229, 211, 0.25);
+    animation: trackPulse 1.6s ease-in-out infinite;
+  }
+}
+
+.trackDot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background-color: var(--ink);
+  flex-shrink: 0;
+  transition: background-color 180ms ease;
+}
+
+.trackLabel {
+  flex: 1;
+  text-align: left;
+}
+
+.trackHint {
+  font-family: var(--font-family-mono);
+  font-size: 10px;
+  letter-spacing: 0.18em;
+  opacity: 0.7;
+}
+
+.actionsHelp {
+  font-family: var(--font-family-sans);
+  font-size: 11px;
+  line-height: 1.45;
+  letter-spacing: 0.04em;
+  color: var(--ink-mute);
+  margin: 0;
+}
+
+@keyframes trackPulse {
+  0%,
+  100% {
+    box-shadow: 0 0 0 3px rgba(237, 229, 211, 0.25);
+  }
+  50% {
+    box-shadow: 0 0 0 5px rgba(237, 229, 211, 0.1);
+  }
+}
+
+/* ── Session tab content ────────────────────────────────────────────────── */
+
+.sessionTab {
+  position: relative;
+  flex: 1;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+  padding: 14px 24px 18px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .panel,
+  .backdrop,
+  .trackBtn,
+  .trackDot,
+  .presetCard {
+    transition: none;
+  }
+
+  .trackBtnActive .trackDot {
+    animation: none;
+  }
+
+  .presetCard:hover {
+    transform: none;
+  }
+}

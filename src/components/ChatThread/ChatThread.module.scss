@@ -1,0 +1,268 @@
+/* Message list + session toolbar + composer. Two variants:
+   - rootCompact: lives inside PlanetDetail tab (tighter, smaller bubbles).
+   - rootFull:    lives inside ChatSessionView (spacious, centred column). */
+
+.root {
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+  flex: 1;
+  position: relative;
+}
+
+.rootCompact {
+  height: 100%;
+}
+
+.rootFull {
+  height: 100%;
+}
+
+.scroll {
+  flex: 1;
+  min-height: 0;
+  overflow-y: auto;
+}
+
+.rootCompact .scroll {
+  padding: 18px 4px 14px;
+}
+
+.rootFull .scroll {
+  padding: 32px 32px 24px;
+}
+
+.thread {
+  display: flex;
+  flex-direction: column;
+  animation: threadIn 320ms cubic-bezier(0.22, 0.61, 0.36, 1);
+}
+
+.rootCompact .thread {
+  gap: 16px;
+}
+
+.rootFull .thread {
+  max-width: 760px;
+  margin: 0 auto;
+  gap: 22px;
+}
+
+@keyframes threadIn {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.bubbleRow {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  max-width: 86%;
+}
+
+.bubbleRowUser {
+  align-self: flex-end;
+  align-items: flex-end;
+}
+
+.bubbleRowAssistant {
+  align-self: flex-start;
+  align-items: flex-start;
+}
+
+.bubbleLabel {
+  font-family: var(--font-family-sans);
+  font-size: 10px;
+  font-weight: 500;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--ink-mute);
+  padding: 0 4px;
+}
+
+.bubble {
+  padding: 12px 16px;
+  font-family: var(--font-family-sans);
+  font-size: 14px;
+  line-height: 1.55;
+  letter-spacing: 0.01em;
+  border: 1px solid var(--line);
+  word-wrap: break-word;
+  overflow-wrap: anywhere;
+}
+
+.rootFull .bubble {
+  padding: 14px 18px;
+}
+
+.bubbleUser {
+  background: var(--paper);
+  color: var(--ink);
+  border-radius: 10px;
+  border-top-right-radius: 0;
+}
+
+.bubbleAssistant {
+  background: var(--paper-light);
+  color: var(--ink);
+  border-radius: 10px;
+  border-top-left-radius: 0;
+}
+
+/* ── Foot: toolbar + composer share a single bottom region ──────────────── */
+
+.foot {
+  flex-shrink: 0;
+  display: flex;
+  flex-direction: column;
+}
+
+.rootFull .foot {
+  padding: 8px 32px 28px;
+  border-top: 1px solid var(--orbit);
+}
+
+.rootCompact .foot {
+  padding: 4px 0 4px;
+}
+
+/* ── Session toolbar (Expand + ⋯) ──────────────────────────────────────── */
+
+.toolbar {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 4px;
+  padding: 6px 0;
+  -webkit-user-select: none;
+  user-select: none;
+}
+
+.rootFull .toolbar {
+  width: min(560px, 80vw);
+  margin: 0 auto;
+}
+
+.toolBtn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 5px 9px;
+  background: transparent;
+  border: 1px solid transparent;
+  color: var(--ink-mute);
+  font-family: var(--font-family-sans);
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: color 160ms ease, background-color 160ms ease,
+    border-color 160ms ease;
+
+  &:hover {
+    color: var(--ink);
+    background-color: var(--paper);
+    border-color: var(--line);
+  }
+
+  &:focus-visible {
+    outline: 2px solid var(--ink);
+    outline-offset: 2px;
+  }
+
+  svg {
+    width: 12px;
+    height: 12px;
+  }
+}
+
+.toolBtnIconOnly {
+  padding: 5px 7px;
+  letter-spacing: 0;
+}
+
+.toolLabel {
+  display: inline-block;
+}
+
+/* ── Popover menu (opens upward from the ⋯ button) ─────────────────────── */
+
+.menuWrap {
+  position: relative;
+  display: inline-flex;
+}
+
+.menu {
+  position: absolute;
+  right: 0;
+  bottom: calc(100% + 6px);
+  min-width: 200px;
+  background: var(--paper-light);
+  border: 1px solid var(--line);
+  box-shadow: 0 10px 28px rgba(31, 31, 31, 0.16),
+    0 2px 6px rgba(31, 31, 31, 0.06);
+  padding: 4px;
+  z-index: 5;
+  display: flex;
+  flex-direction: column;
+  animation: menuIn 140ms cubic-bezier(0.22, 0.61, 0.36, 1);
+}
+
+@keyframes menuIn {
+  from {
+    opacity: 0;
+    transform: translateY(4px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.menuItem {
+  display: block;
+  width: 100%;
+  padding: 9px 12px;
+  background: transparent;
+  border: none;
+  color: var(--ink);
+  font-family: var(--font-family-sans);
+  font-size: 13px;
+  letter-spacing: 0.02em;
+  text-align: left;
+  cursor: pointer;
+  transition: background-color 140ms ease;
+
+  &:hover,
+  &:focus-visible {
+    background-color: var(--paper);
+    outline: none;
+  }
+}
+
+/* ── Composer wrap ─────────────────────────────────────────────────────── */
+
+.composer {
+  display: flex;
+  justify-content: center;
+}
+
+.rootFull .composer > * {
+  width: min(560px, 80vw);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .thread,
+  .menu,
+  .toolBtn {
+    animation: none;
+    transition: none;
+  }
+}

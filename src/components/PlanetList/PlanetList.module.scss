@@ -1,0 +1,242 @@
+.panel {
+  position: fixed;
+  top: 16px;
+  left: 16px;
+  width: 232px;
+  background: var(--paper-light);
+  border: 1px solid var(--line);
+  // box-shadow: 0 12px 32px rgba(31, 31, 31, 0.12);
+  z-index: 15;
+  display: flex;
+  flex-direction: column;
+  font-family: var(--font-family-sans);
+  -webkit-user-select: none;
+  user-select: none;
+  max-height: calc(100vh - 32px);
+  overflow: hidden;
+}
+
+/* ── Toggle header ─────────────────────────────────────────────────────── */
+
+.toggle {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  padding: 16px 18px;
+  background: transparent;
+  border: none;
+  border-bottom: 1px solid var(--orbit);
+  color: var(--ink);
+  cursor: pointer;
+  font-family: inherit;
+  font-size: 10px;
+  font-weight: 500;
+  letter-spacing: 0.24em;
+  text-transform: uppercase;
+  transition: background-color 180ms ease, color 180ms ease;
+
+  &:hover {
+    background-color: var(--ink);
+    color: var(--paper);
+  }
+
+  &:focus-visible {
+    outline: 2px solid var(--ink);
+    outline-offset: -3px;
+  }
+}
+
+.panelCollapsed .toggle {
+  border-bottom: none;
+}
+
+.toggleLabel {
+  display: inline-block;
+}
+
+.toggleChevron {
+  display: inline-flex;
+  width: 10px;
+  height: 6px;
+  transition: transform 220ms ease;
+
+  svg {
+    width: 100%;
+    height: 100%;
+    display: block;
+  }
+}
+
+.panelCollapsed .toggleChevron {
+  transform: rotate(-90deg);
+}
+
+/* ── Body & sections ───────────────────────────────────────────────────── */
+
+.body {
+  display: flex;
+  flex-direction: column;
+  overflow-y: auto;
+}
+
+.section {
+  display: flex;
+  flex-direction: column;
+  padding: 14px 0 10px;
+
+  & + & {
+    border-top: 1px dashed var(--orbit);
+  }
+}
+
+.sectionLabel {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin: 0 0 6px;
+  padding: 0 18px;
+  font-family: var(--font-family-sans);
+  font-size: 10px;
+  font-weight: 500;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--ink-mute);
+}
+
+.sectionCount {
+  font-family: var(--font-family-mono);
+  font-size: 9px;
+  letter-spacing: 0.16em;
+  color: var(--ink-faint);
+  border: 1px solid var(--orbit);
+  padding: 1px 5px;
+  line-height: 1;
+}
+
+.items {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+}
+
+/* ── Tree connector: thin vertical line indicating planets orbit the Sun ─ */
+
+.itemsTree {
+  position: relative;
+  padding-left: 18px;
+
+  &::before {
+    content: "";
+    position: absolute;
+    top: 6px;
+    bottom: 6px;
+    left: 24px;
+    width: 1px;
+    background: repeating-linear-gradient(
+      to bottom,
+      var(--orbit) 0 2px,
+      transparent 2px 5px
+    );
+  }
+}
+
+.itemsTree .row {
+  position: relative;
+
+  &::before {
+    content: "";
+    position: absolute;
+    top: 50%;
+    left: 6px;
+    width: 8px;
+    height: 1px;
+    background: var(--orbit);
+  }
+}
+
+/* ── Rows ──────────────────────────────────────────────────────────────── */
+
+.row {
+  list-style: none;
+}
+
+.item {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 9px 18px;
+  background: transparent;
+  border: none;
+  color: var(--ink);
+  cursor: pointer;
+  text-align: left;
+  font-family: inherit;
+  font-size: 12px;
+  font-weight: 500;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  transition: background-color 160ms ease, color 160ms ease;
+
+  &:hover {
+    background-color: var(--paper);
+  }
+
+  &:focus-visible {
+    outline: 2px solid var(--ink);
+    outline-offset: -3px;
+  }
+}
+
+.itemSelected {
+  background-color: var(--ink);
+  color: var(--paper);
+
+  &:hover {
+    background-color: var(--ink);
+  }
+}
+
+/* Star gets a bolder, slightly larger swatch + serif typography flavour */
+.itemStar {
+  font-family: var(--font-family-serif);
+  font-size: 14px;
+  letter-spacing: 0.04em;
+  text-transform: none;
+  font-weight: 500;
+
+  .swatch {
+    width: 16px;
+    height: 16px;
+    box-shadow: 0 0 0 3px rgba(217, 120, 52, 0.18);
+  }
+}
+
+.swatch {
+  width: 11px;
+  height: 11px;
+  border-radius: 50%;
+  border: 1px solid var(--line);
+  flex-shrink: 0;
+  transition: border-color 160ms ease;
+}
+
+.itemSelected .swatch {
+  border-color: var(--paper);
+}
+
+.itemName {
+  flex: 1;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .toggle,
+  .toggleChevron,
+  .item,
+  .swatch {
+    transition: none;
+  }
+}

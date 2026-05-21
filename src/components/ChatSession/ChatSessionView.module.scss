@@ -1,0 +1,236 @@
+/* Full-screen session view. Semi-opaque paper lets the blurred solar system
+   show through; SolarSystem owns the blur on its canvas. */
+
+.overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 30;
+  display: grid;
+  grid-template-columns: auto 1fr;
+  background: rgba(255, 255, 255, 0.64);
+  animation: overlayIn 220ms cubic-bezier(0.22, 0.61, 0.36, 1);
+}
+
+@keyframes overlayIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+/* ── Sidebar (collapsed icon-only by default; hover-expands) ───────────── */
+
+.sidebar {
+  width: 56px;
+  height: 100%;
+  background: var(--paper-light);
+  border-right: 1px solid var(--orbit);
+  transition: width 200ms cubic-bezier(0.22, 0.61, 0.36, 1);
+  overflow: hidden;
+  -webkit-user-select: none;
+  user-select: none;
+
+  &:hover,
+  &:focus-within {
+    width: 240px;
+  }
+}
+
+.sidebarInner {
+  display: flex;
+  flex-direction: column;
+  padding: 18px 8px;
+  gap: 10px;
+  height: 100%;
+}
+
+.sidebarDivider {
+  height: 1px;
+  margin: 4px 6px;
+  background: var(--orbit);
+}
+
+.sessionList {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  overflow-y: auto;
+  flex: 1;
+  min-height: 0;
+}
+
+/* Generic item base — shared by newBtn + sessionItem so they line up. */
+.newBtn,
+.sessionItem {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 10px 10px;
+  background: transparent;
+  border: 1px solid transparent;
+  color: var(--ink);
+  font-family: var(--font-family-sans);
+  font-size: 13px;
+  letter-spacing: 0.02em;
+  text-align: left;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: background-color 160ms ease, border-color 160ms ease,
+    color 160ms ease;
+
+  &:hover {
+    background-color: var(--paper);
+  }
+
+  &:focus-visible {
+    outline: 2px solid var(--ink);
+    outline-offset: 2px;
+  }
+}
+
+.sessionItemActive {
+  background-color: var(--paper);
+  border-color: var(--line);
+}
+
+.itemIcon,
+.newIcon {
+  flex-shrink: 0;
+  width: 24px;
+  height: 24px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid var(--line);
+  font-family: var(--font-family-mono);
+  font-size: 11px;
+  color: var(--ink);
+  background: var(--paper-light);
+}
+
+.newIcon {
+  font-size: 16px;
+  font-family: var(--font-family-sans);
+  font-weight: 500;
+}
+
+.itemLabel {
+  flex: 1;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  opacity: 0;
+  transition: opacity 160ms ease;
+}
+
+/* Reveal labels only when the sidebar is hovered/focused (expanded). */
+.sidebar:hover .itemLabel,
+.sidebar:focus-within .itemLabel {
+  opacity: 1;
+}
+
+/* ── Main column (header + thread) ─────────────────────────────────────── */
+
+.main {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  min-height: 0;
+}
+
+.header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 22px 32px 18px;
+  border-bottom: 1px solid var(--orbit);
+  flex-shrink: 0;
+  -webkit-user-select: none;
+  user-select: none;
+}
+
+.headerLeft {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+
+.swatch {
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  border: 1px solid var(--line);
+  flex-shrink: 0;
+}
+
+.headerText {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.eyebrow {
+  font-family: var(--font-family-sans);
+  font-size: 10px;
+  font-weight: 500;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--ink-mute);
+}
+
+.title {
+  font-family: var(--font-family-serif);
+  font-size: 22px;
+  font-weight: 500;
+  color: var(--ink);
+  line-height: 1.1;
+  margin: 0;
+}
+
+.headerActions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.iconBtn {
+  width: 32px;
+  height: 32px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid var(--line);
+  background: transparent;
+  color: var(--ink);
+  cursor: pointer;
+  transition: background-color 180ms ease, color 180ms ease;
+
+  &:hover {
+    background-color: var(--ink);
+    color: var(--paper);
+  }
+
+  &:focus-visible {
+    outline: 2px solid var(--ink);
+    outline-offset: 2px;
+  }
+
+  svg {
+    width: 14px;
+    height: 14px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .overlay {
+    animation: none;
+  }
+
+  .sidebar,
+  .itemLabel,
+  .iconBtn {
+    transition: none;
+  }
+}
